@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/WEB-INF/template/template.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+		<title>LIVRAISON</title>
+	</ui:define>
+
+	<ui:define name="content">
+		<div class="container">
+
+			<div class="row justify-content-center">
+
+				<div class="col-md-8 col-md-offset-2" align="center">
+
+					<h1>GeoLocation Tutorial value="#{employeController.lon}"</h1>
+
+					<div style="text-align: left; margin-top: 30px;">
+						<h:panelGroup columns="2">
+							<h:form>
+								<table>
+
+									<tr>
+										<td><b>Latitude: </b></td>
+										<td><span id="latitude" /></td>
+										<td><input id="latitude1"
+											value="#{employeController.lat}" /></td>
+									</tr>
+									<tr>
+										<td><b>Longitude: </b></td>
+										<td><span id="longitude" /></td>
+									</tr>
+									<tr>
+										<td><b>Country: </b></td>
+										<td><h:selectOneMenu
+												value="#{employeController.localisation}">
+												<f:selectItem itemLabel="Choisir votre ville"
+													itemValue="#{null}" />
+												<f:selectItems value="#{livraisonController.localisations}" />
+											</h:selectOneMenu></td>
+									</tr>
+									<tr>
+										<td colspan="2"><h:commandButton
+												value="Ajouter Livraison"
+												action="#{employeController.addLivraisonUser()}" /></td>
+									</tr>
+								</table>
+							</h:form>
+						</h:panelGroup>
+					</div>
+
+					<div id="map">
+						<iframe width="600" height="450" frameborder="0"
+							style="border: 0px;" src="" allowfullscreen="" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			crossorigin="anonymous"></script>
+
+		<script>
+			$(document).ready(function() {
+				if ("geolocation" in navigator) {
+					navigator.geolocation.getCurrentPosition(function(p) {
+						showUserDetails(p.coords.latitude, p.coords.longitude);
+					}, function(e) {
+						ipLookup();
+					});
+				} else
+					ipLookup();
+			});
+			function showUserDetails(latitude, longitude, additional) {
+				var position = latitude + "," + longitude;
+				document.getElementById('latitude1').value = latitude;
+				$("#latitude").text(latitude);
+				$("#longitude").text(longitude);
+				var url = "https://www.google.com/maps/embed/v1/view?zoom=11&amp;center="
+						+ position
+						+ "&amp;key=AIzaSyBeZoVOQicEUReWkEdCOanpgXR-XmbY7tE";
+				$("iframe").attr('src', url);
+				if (typeof additional != "undefined") {
+					$("#country").text(additional.country.name);
+					$("#city").text(additional.city.name);
+					$("#continent").text(additional.continent.name);
+				}
+			}
+			function ipLookup() {
+				$.get('https://api.userinfo.io/userinfos', function(r) {
+					showUserDetails(r.position.latitude, r.position.longitude,
+							r);
+				});
+			}
+		</script>
+	</ui:define>
+
+</ui:composition>

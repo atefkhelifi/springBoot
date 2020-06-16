@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template.xhtml">
+
+	<ui:define name="title">
+		<title>RECLAMATION</title>
+	</ui:define>
+
+	<ui:define name="content">
+	<p:panel id="basic" header="Reclamation"  style="margin-bottom:20px">
+		<h:panelGroup columns="2">
+		
+			<h:form>
+				<table>
+					<tr>
+						<td><p:outputLabel  value="Titre:" /></td>
+						<td><p:inputText id="valTitre" value="#{jsfReclamationController.titre}" required="true" requiredMessage="* ce champ est obligatoire"/></td>
+						<td><p:message for="valTitre" style="color:red"></p:message></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel  value="Contenu:" /></td>
+						
+						<td>
+						<p:inputTextarea rows="3" cols="33" id="valContenu" value="#{jsfReclamationController.contenu}" required="true" requiredMessage="* ce champ es obligatoire"/></td>
+					<td><p:message for="valContenu" style="color:red"></p:message></td>
+					</tr>
+
+
+					<tr>
+						<td><p:outputLabel  value="Probleme:" /></td>
+						<td><p:selectOneMenu 
+								id="valProb" value="#{jsfReclamationController.decision}" required="true" requiredMessage="* ce champ es obligatoire">
+								<f:selectItem itemLabel="type de probleme" itemValue="#{null}" />
+								<f:selectItems value="#{jsfReclamationController.decisions}" />
+							</p:selectOneMenu></td>
+												<td><p:message for="valProb" style="color:red"></p:message></td>
+							
+							
+					</tr>
+					<tr>
+						<td colspan="2"><p:commandButton value="Envoyer"
+								action="#{jsfReclamationController.addReclamation()}" ajax="false" /></td>
+					</tr>
+
+
+
+
+				</table>
+			</h:form>
+		</h:panelGroup>
+		</p:panel>
+	</ui:define>
+
+</ui:composition>

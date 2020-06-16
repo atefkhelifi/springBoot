@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/xhtml/templateAdmin.xhtml">
+
+	<ui:define name="left">
+	<p:panel id="basic" header="Livreur"  style="margin-bottom:20px">
+		<h:panelGroup columns="2">
+			<h:form>
+				<table>
+					<tr>
+						
+						<td><p:selectOneMenu id="valName" value="#{jsfLivraisonController.atefid}" required="true" requiredMessage="* ce champ est obligatoire">
+								<f:selectItem itemLabel="Choisir un livreur" itemValue="#{null}" />
+								<f:selectItems value="#{jsfLivraisonController.livreurs}"
+									var="livreur" itemValue="#{livreur.livreurId}"
+									itemLabel="#{livreur.nomLivreur}" />
+							</p:selectOneMenu></td>
+							<td><p:message for="valName" style="color:red"></p:message></td>
+					</tr>
+					<tr>
+						<td><p:commandButton
+								action="#{jsfLivraisonController.affecterLivreur()}"
+								value="Valider" ajax="false"/></td>
+					</tr>
+				</table>
+			</h:form>
+		</h:panelGroup>
+		</p:panel>
+		<h:panelGroup columns="2">
+			<h:form>
+				<p:dataTable value="#{jsfLivraisonController.livraisons}"
+					var="livraison" border="1"
+					 paginator="true"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                 rowsPerPageTemplate="5,10,15">
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Lat" />
+						</f:facet>
+						<h:outputText value="#{livraison.lat}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Lon" />
+						</f:facet>
+						<h:outputText value="#{livraison.lon}" />
+					</p:column>
+					<!-- <p:column>
+						<f:facet name="header">
+							<h:outputText value="localisation" />
+						</f:facet>
+						<h:outputText value="#{livraison.localisation}" />
+					</p:column> -->
+					<p:column headerText="ville" sortBy="#{livraison.contry}"
+								filterBy="#{livraison.contry}">
+						<f:facet name="header">
+							<h:outputText value="Ville" />
+						</f:facet>
+						<h:outputText value="#{livraison.contry}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Frais" />
+						</f:facet>
+						<h:outputText value="#{livraison.frais}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+						<h:outputText value="#{livraison.status}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="kilo" />
+						</f:facet>
+						<h:outputText value="#{livraison.kilometrage}" />
+					</p:column>
+					<p:column  headerText="livreur" sortBy="#{livraison.livreur.nomLivreur}"
+								filterBy="#{livraison.livreur.nomLivreur}">
+					
+						<f:facet name="header">
+							<h:outputText value="livreur" />
+						</f:facet>
+						<h:outputText value="#{livraison.livreur.nomLivreur}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						<h:commandButton
+							action="#{jsfLivraisonController.displayLivreur(livraison)}"
+							value="Affecter un Livreur" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</h:panelGroup>
+
+	</ui:define>
+</ui:composition>

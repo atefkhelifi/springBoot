@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/xhtml/templateAdmin.xhtml">
+
+	<ui:define name="left">
+	
+		
+		<h:panelGroup columns="2">
+			<h:form>
+				<p:dataTable value="#{jsfReclamationController.reclamations}"
+					var="reclamation" border="1"
+					 paginator="true"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                 rowsPerPageTemplate="5,10,15">
+                 ccccccccccccccc
+                 <p:column>
+						<f:facet name="header">
+							<h:outputText value="Nom" />
+						</f:facet>
+						<h:outputText value="#{reclamation.nom}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Prenom" />
+						</f:facet>
+						<h:outputText value="#{reclamation.prenom}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Titre" />
+						</f:facet>
+						<h:outputText value="#{reclamation.titre}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Contenu" />
+						</f:facet>
+						<h:outputText value="#{reclamation.contenu}" />
+					</p:column>
+					<!-- <p:column>
+						<f:facet name="header">
+							<h:outputText value="localisation" />
+						</f:facet>
+						<h:outputText value="#{livraison.localisation}" />
+					</p:column> -->
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Date" />
+						</f:facet>
+						<h:outputText value="#{reclamation.date}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Probleme" />
+						</f:facet>
+						<h:outputText value="#{reclamation.decision}" />
+					</p:column>
+					
+				</p:dataTable>
+			</h:form>
+		</h:panelGroup>
+
+	</ui:define>
+</ui:composition>

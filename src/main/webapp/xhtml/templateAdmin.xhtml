@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+      
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="default.css" />
+	<h:outputStylesheet library="css" name="cssLayout.css" />
+
+	<link rel="stylesheet" media="screen" href="/css/styles.css"
+		type="text/css" />
+	<link rel="stylesheet" media="print" href="/css/print.css"
+		type="text/css" />
+	<link rel="stylesheet" media="(max-width: 800px)" href="/css/print.css"
+		type="text/css" />
+	<title><ui:insert name="title"></ui:insert></title>
+</h:head>
+
+<h:body>
+	<div id="top" class="top">
+		
+		<p:menubar>
+			<p:menuitem value="Home" url="index.xhtml" />
+			<p:submenu label="Administration">
+				<p:menuitem value="gestion de Categorie"
+					url="/xhtml/categorie.xhtml" />
+				<p:menuitem value="gestion de produit"
+					url="/xhtml/produitAdmin.xhtml" />
+					<p:menuitem value="gestion de livraison"
+					url="/xhtml/livraison.xhtml" />
+					<p:menuitem value="gestion de livreur"
+					url="/xhtml/livreur.xhtml" />
+					<p:menuitem value="gestion de reclamation"
+					url="/xhtml/reclamationAdmin.xhtml" />
+					
+			</p:submenu>
+			<p:menuitem id="logout" style="color:red;" value="Logout"
+				icon="ui-icon-close" ajax="false" url="/xhtml/login.xhtml" />
+
+		</p:menubar>
+
+	</div>
+	<div>
+		<div id="left" class="left" style="background-color:#0080c0;">
+			<h:panelGroup>
+				<img src="/assets/images/logo1.png" alt="" width="145px" />
+
+				<h:form>
+
+					<h:outputText style="font-weight:bold;color: #FF0000;"
+						value="Bonjour #{employeController.authenticatedUser.prenom}  #{employeController.authenticatedUser.nom}" />
+|
+
+				</h:form>
+			</h:panelGroup>
+		</div>
+		<div id="content" class="left_content">
+			<ui:insert name="left">ff</ui:insert>
+		</div>
+
+		<div class="printonly">
+			<p:outputLabel value="Printed from PlantPlaces.com" />
+		</div>
+
+	</div>
+</h:body>
+</html>

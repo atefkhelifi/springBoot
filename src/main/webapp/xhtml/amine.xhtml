@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template.xhtml">
+
+	<ui:define name="title">
+		<title>LIVRAISON</title>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div id="map" align="center">
+			<iframe width="600" height="450" frameborder="0" style="border: 0px;"
+				src="" allowfullscreen="" />
+		</div>
+
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			crossorigin="anonymous"></script>
+
+		<script>
+        $(document).ready(function () {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(function (p) {
+                    showUserDetails(p.coords.latitude , p.coords.longitude);
+                }, function (e) {
+                    ipLookup();
+                });
+            } else
+                ipLookup();
+        });
+        function showUserDetails(latitude , longitude, additional) {
+            var position = latitude + "," + longitude;
+            $("#latitude").text(latitude);
+            $("#longitude").text(longitude);
+            var url = "https://www.google.com/maps/embed/v1/view?zoom=11&amp;center="+position+"&amp;key=AIzaSyBeZoVOQicEUReWkEdCOanpgXR-XmbY7tE";
+            $("iframe").attr('src', url);
+            if (typeof additional != "undefined") {
+                $("#country").text(additional.country.name);
+                $("#city").text(additional.city.name);
+                $("#continent").text(additional.continent.name);
+            }
+        }
+        function ipLookup() {
+            $.get('https://api.userinfo.io/userinfos', function (r) {
+               showUserDetails(r.position.latitude, r.position.longitude, r);
+            });
+        }
+    </script>
+
+		<h:form id="eform">
+		<table><tr>
+			<td><h:selectOneMenu id="valContry" value="#{employeController.contry}" required="true" requiredMessage="* ce champ es obligatoire">
+				<f:selectItem itemLabel="Choisir votre ville" itemValue="#{null}" />
+				<f:selectItems value="#{livraisonController.contrys}" />
+			</h:selectOneMenu></td>
+			<td><p:message for="valContry" style="color:red"></p:message></td>
+			</tr>
+			</table>
+			<h:inputHidden id="latitude1" value="#{employeController.lat}"  />
+			<h:inputHidden id="longitude1" value="#{employeController.lon}" />
+			<h:inputHidden id="localisation1"
+				value="#{employeController.localisation}" />
+			<h:commandButton value="Ajouter Livraison"
+				action="#{employeController.addLivraisonUser()}" class="btn btn-primary"/>
+		</h:form>
+
+			
+		<p>Click the button to get your coordinates.</p>
+		<button type="button" class="btn btn-primary" onclick="getLocation()">
+			Try It.</button>
+
+		<h:inputHidden  id="coordinate"  />
+
+		<h:inputHidden id="json" />
+
+		<script type="text/javascript">
+		
+    	 var x = document.getElementById("coordinate");
+    var y = document.getElementById("json");
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+    function showPosition(position) {
+      x.innerHTML =
+        "Latitude: " +
+        position.coords.latitude +
+        "&lt;br&gt;Longitude: " +
+        position.coords.longitude;
+      //Create query for the API.
+      var latitude = "latitude=" + position.coords.latitude;
+      var lat=position.coords.latitude;
+      document.getElementById("eform:latitude1").value=lat; 
+      //console.log("position.coords.latitude")=hh;
+      var longitude = "&amp;longitude=" + position.coords.longitude;
+      var lon=position.coords.longitude;
+      document.getElementById("eform:longitude1").value=lon;
+      var query = latitude + longitude + "&amp;localityLanguage=en";
+      const Http = new XMLHttpRequest();
+      var bigdatacloud_api =
+        "https://api.bigdatacloud.net/data/reverse-geocode-client?";
+      bigdatacloud_api += query;
+      Http.open("GET", bigdatacloud_api);
+      Http.send();
+      Http.onreadystatechange = function() {
+        if (this.readyState == 4 &amp;&amp; this.status == 200) {
+          var myObj = JSON.parse(this.responseText);
+          console.log(myObj);
+          y.innerHTML += "Postcodes =" + myObj.postcode + "&lt;br&gt;City = " + myObj.locality + "&lt;br&gt;Country = " + myObj.countryName;
+          var loc=myObj.locality;
+          document.getElementById("eform:localisation1").value=loc;
+        }
+      };
+    }
+    </script>
+
+
+	</ui:define>
+
+</ui:composition>

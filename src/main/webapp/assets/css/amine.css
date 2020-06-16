@@ -1,0 +1,8 @@
+@charset "ISO-8859-1";
+ body{
+margin:0px;
+}
+#header{
+height:60px;
+background:#FF0000;
+}

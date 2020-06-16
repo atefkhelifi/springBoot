@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/xhtml/templateAdmin.xhtml">
+
+	<ui:define name="left">
+		<script type="text/javascript">
+    //<![CDATA[
+    function dateTemplateFunc(date) {
+        return '<span style="background-color:' + ((date.day < 21 && date.day > 10) ? '#81C784' : 'inherit') + ';border-radius:50%;padding: .25em;width: 1.75em; height:1.75em; display:block;">' + date.day + '</span>';
+    }
+    //]]>
+</script>
+		<h:panelGroup columns="2">
+			<h:form>
+				<table>
+					<tr>
+											<td><p:outputLabel value="Nom:" /></td>
+				<td><p:inputText id="valName" value="#{employeController.nomLivreur}" required="true" requiredMessage="* ce champ est obligatoire"/></td>
+					<td><p:message for="valName" style="color:red"></p:message></td>
+					</tr>
+					<!-- <tr>
+						<td><h:outputText value="Type de permis"></h:outputText></td>
+						<td><p:inputText
+								value="#{employeController.typePermisConduire}"/></td>
+					</tr> -->
+
+					<tr>
+
+						<!-- <td><h:inputText
+								value="#{employeController.datePermisConduire}">
+								<f:convertDateTime pattern="dd-mm-yyyy" />
+							</h:inputText></td> -->
+						<td><p:outputLabel for="dateTemplate" value="Date de permis:" /></td>
+						<td><p:datePicker id="dateTemplate"
+								value="#{employeController.datePermisConduire}"
+								dateTemplate="dateTemplateFunc" /></td>
+					</tr>
+					<tr>
+					<td><p:outputLabel for="dateTemplate" value="Zone:" /></td>
+											<td><p:selectOneMenu value="#{employeController.zone}">
+								<f:selectItem itemLabel="Choisir la zone" itemValue="#{null}" />
+								<f:selectItems value="#{employeController.zones}" />
+							</p:selectOneMenu></td>
+					</tr>
+					<tr>
+						<td colspan="2"><p:commandButton value="Ajouter Livreur"
+								action="#{employeController.addEmploye()}" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><p:commandButton
+								value="Mettre A jour Livreur"
+								action="#{employeController.updateLivreur()}" /></td>
+					</tr>
+				</table>
+			</h:form>
+		</h:panelGroup>
+		<h:panelGroup columns="2">
+			<h:form>
+				<p:dataTable value="#{employeController.livreurs}" var="livreur"
+					border="1" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+					rowsPerPageTemplate="5,10,15">
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Nom" />
+						</f:facet>
+						<h:outputText value="#{livreur.nomLivreur}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Nombre de livraisons" />
+						</f:facet>
+						<h:outputText value="#{livreur.nbrMax}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Disponibilité" />
+						</f:facet>
+						<h:outputText value="#{livreur.dispo== true ? 'Oui' : 'Non'}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Zone" />
+						</f:facet>
+						<h:outputText value="#{livreur.zone}" />
+					</p:column>
+					<!-- <p:column>
+						<f:facet name="header">
+							<h:outputText value="Permis de Conduire" />
+						</f:facet>
+						<h:outputText value="#{livreur.typePermisConduire}" />
+					</p:column> -->
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Date de Permis" />
+						</f:facet>
+						<h:outputText value="#{livreur.datePermisConduire}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						<p:commandButton
+							action="#{employeController.removeLivreur(livreur.livreurId)}"
+							value="Supprimer" ajax="false" />
+						<p:commandButton
+							action="#{employeController.displayLivreur(livreur)}"
+							value="Afficher" ajax="false" />
+							<p:commandButton
+							action="#{employeController.calculateSalary(livreur.livreurId)}"
+							value="Salaire" ajax="false" />
+							<p:commandButton
+							action="#{employeController.confirm(livreur.livreurId)}"
+							value="dispo" ajax="false" />
+					</p:column>
+				</p:dataTable>
+	<p:button href="/xhtml/statestic.xhtml" value="Satistic"></p:button>
+			</h:form>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>
